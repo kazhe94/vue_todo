@@ -1,20 +1,34 @@
 <template>
   <app-page title="Добавить задачу">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam consequuntur dolor expedita illo impedit non provident reiciendis sit, vitae voluptate!
+    <div class="form-wrap">
+      <todo-form></todo-form>
+    </div>
   </app-page>
 </template>
 
 <script>
 import AppPage from "@/components/AppPage";
+import TodoForm from "@/components/TodoForm";
+import {useStore} from "vuex";
+import {computed} from "vue";
 
 export default {
   name: "Home",
   components: {
-    AppPage
+    AppPage,
+    TodoForm
+  },
+  setup() {
+    const store = useStore()
+    // const todos = computed(() => store.getters['todos/todos'])
+    // console.log(todos.value)
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .form-wrap {
+    display: flex;
+    justify-content: center;
+  }
 </style>

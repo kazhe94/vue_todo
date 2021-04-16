@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div class="container">
-      <h1 class="title">Todos</h1>
+      <h1 class="navbar-title">Todos</h1>
       <ul class="nav-list">
         <li class="nav-list__item">
           <router-link to="/" exact>Создать</router-link>

@@ -21,4 +21,7 @@ export default {
   .app-page {
     padding: 30px 0;
   }
+  .title {
+    margin-bottom: 30px;
+  }
 </style>
