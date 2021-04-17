@@ -9,14 +9,22 @@ export default {
         addTodo(state, payload) {
             state.todos.push({
                 ...payload,
-                id: state.todos.length + 1
+                id: Date.now(),
+                status: 'active'
             })
-            console.log(state.todos)
+            localStorage.setItem('todos', JSON.stringify(state.todos))
+        },
+        removeTodo(state, id) {
+            state.todos = state.todos.filter(el => el.id !== id)
+            localStorage.setItem('todos', JSON.stringify(state.todos))
+        },
+        updateStatus(state, payload) {
+            const current = state.todos.find(el => el.id === payload.id)
+            current.status = payload.status
         }
     },
     getters: {
         todos(state) {
-            console.log(state.todos)
             return state.todos
         }
     }
