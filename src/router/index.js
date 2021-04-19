@@ -12,6 +12,11 @@ const routes = [
         path:'/list',
         name: 'List',
         component: () => import('@/views/List')
+    },
+    {
+        path: '/task/:id',
+        name: 'Task',
+        component: () => import('@/views/Todo')
     }
 ]
 const router = createRouter({

@@ -75,7 +75,11 @@
           :open="filterOpened"
           @openFilter="filterOpened = !filterOpened"
           @close="filterOpened = false"
-      ></app-filter>
+      >
+        <template #count>
+          <span>{{ `(${todos.length})` }}</span>
+        </template>
+      </app-filter>
     </div>
     <ul class="todo-list" v-if="todos.length">
       <todo-item

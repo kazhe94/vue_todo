@@ -1,19 +1,15 @@
 <template>
   <li class="todo-item">
-    <div class="todo-item__visible" @click="isOpen = !isOpen">
-      <h3 class="todo-item__title" :class="{'completed': todo.status==='completed'}">{{ todo.title }}</h3>
-      <div class="todo-item__controls">
-        <button
-            class="btn-complete"
-            :class="{'completed': todo.status==='completed'}"
-            @click.stop="updateTodo(todo.id)"
-        >{{ todo.status==='active' ? 'Выполнить' : 'Отмена' }}</button>
-        <button class="btn-delete" @click.stop="removeTodo(todo.id)">Удалить</button>
-      </div>
+    <h5 class="todo-item__title" :class="{'completed': todo.status==='completed'}">{{ todo.title }}</h5>
+    <div class="todo-item__controls">
+      <button
+          class="btn-complete"
+          :class="{'completed': todo.status==='completed'}"
+          @click.stop="updateTodo(todo.id)"
+      >{{ todo.status==='active' ? 'Выполнить' : 'Отмена' }}</button>
+      <button class="btn-delete" @click.stop="removeTodo(todo.id)">Удалить</button>
     </div>
-    <div class="todo-item__spoiler" v-if="isOpen">
-      <p class="todo-item__description">{{ todo.description }}</p>
-    </div>
+    <router-link class="todo-item__link" :to="`/task/${todo.id}`">Открыть</router-link>
   </li>
 </template>
 
@@ -50,6 +46,8 @@ export default {
 
 <style scoped lang="scss">
   .todo-item {
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -62,12 +60,24 @@ export default {
     &:not(:last-child) {
       margin-bottom: 10px;
     }
-    &__visible {
-      display: flex;
-      justify-content: space-between;
-    }
     &__spoiler {
       padding-top: 20px;
+    }
+    &__controls {
+      margin-left: auto;
+      margin-right: 20px;
+    }
+    &__link {
+      padding: 3px;
+      border: 2px solid dodgerblue;
+      border-radius: 4px;
+      font-size: 14px;
+      color: dodgerblue;
+      transition: 0.3s;
+      &:hover {
+        background-color: dodgerblue;
+        color: #ffffff;
+      }
     }
   }
   .btn-complete {

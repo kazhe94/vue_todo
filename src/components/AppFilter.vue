@@ -3,7 +3,7 @@
     <p
         class="option__text"
         @click="$emit('openFilter')"
-    >{{ modelValue.text }} <span>&#9660;</span></p>
+    >{{ modelValue.text }} <slot name="count"/> <span>&#9660;</span></p>
     <ul
         class="option__list"
         v-if="open"
