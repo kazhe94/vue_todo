@@ -3,7 +3,7 @@
     <p
         class="filter__title"
         @click="$emit('openFilter')"
-    >{{ modelValue.status }}</p>
+    >{{ modelValue.status }} <span>&#9660;</span></p>
     <ul
         class="filter__list"
         v-if="open"
@@ -22,7 +22,7 @@
 export default {
   name: "AppFilter",
   props: ['modelValue', 'options', 'open'],
-  emits: ['update:modelValue', 'openFilter'],
+  emits: ['update:modelValue', 'openFilter', 'close'],
   setup() {
 
   }
@@ -34,9 +34,6 @@ export default {
     position: relative;
     &__title {
       cursor: pointer;
-      text-transform: uppercase;
-      font-size: 12px;
-      font-weight: 500;
     }
     &__list {
       position: absolute;

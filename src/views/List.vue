@@ -1,7 +1,7 @@
 <template>
   <app-page title="Список задач">
     <div class="filters">
-      <app-sort></app-sort>
+      <p class="sort" @click="sort = !sort">Сортировать по названию</p>
       <app-filter
           v-model="filter"
           :options="filterOptions"
@@ -24,7 +24,7 @@
 <script>
 import AppPage from "@/components/AppPage";
 import {useStore} from "vuex";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import TodoItem from "@/components/TodoItem";
 import AppSort from "@/components/AppSort";
 import AppFilter from "@/components/AppFilter";
@@ -44,20 +44,34 @@ export default {
       type: 'all',
       status: 'Все задачи'
     })
-    const sort = ref()
+    const sort = ref(null)
     const filterOptions = [
       {type: 'all', status: 'Все задачи'},
       {type: 'active', status: 'Активные'},
       {type: 'completed', status: 'Завершённые'}
     ]
+    const todos = computed(() => store.getters['todos/todos']
+        .filter(item => {
+          return filter.value.type !== 'all' ? item.status === filter.value.type : item
+        })
+        .sort((a, b) => {
+          if(sort.value) {
+            return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
+          }
+          if(sort.value === false) {
+            return a.title.toLowerCase() > b.title.toLowerCase() ? -1 : 1
+          }
+          return
+        })
+    )
+    console.log(todos.value)
 
-    const todos = computed(() => store.getters['todos/todos'])
-    // console.log(todos.value)
     return {
       todos,
       filter,
       filterOptions,
-      filterOpened
+      filterOpened,
+      sort
     }
   }
 }
@@ -76,6 +90,17 @@ export default {
     }
   }
   .filters {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .sort {
+    display: inline-block;
+    cursor: pointer;
   }
 </style>

@@ -35,10 +35,12 @@ export default {
     const description = ref('')
     const submitHandler = () => {
       const todo = {
+        id: Date.now(),
         title: title.value,
-        description: description.value
+        description: description.value,
+        status: 'active'
       }
-      store.commit('todos/addTodo', todo)
+      store.dispatch('todos/createTodo', todo)
       title.value = ''
       description.value = ''
     }
