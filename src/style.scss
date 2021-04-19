@@ -34,3 +34,21 @@ button {
   padding: 0 20px;
   margin: 0 auto;
 }
+.option__text {
+  cursor: pointer;
+}
+.option__list {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  background-color: #fff;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+.option__item {
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #ccc;
+  }
+}

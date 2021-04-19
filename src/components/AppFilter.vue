@@ -1,20 +1,21 @@
 <template>
   <div class="filter">
     <p
-        class="filter__title"
+        class="option__text"
         @click="$emit('openFilter')"
-    >{{ modelValue.status }} <span>&#9660;</span></p>
+    >{{ modelValue.text }} <span>&#9660;</span></p>
     <ul
-        class="filter__list"
+        class="option__list"
         v-if="open"
     >
       <li
-          class="filter__item"
+          class="option__item"
           v-for="option in options"
           :key="option.type"
           @click="$emit('update:modelValue', option), $emit('close')"
-      >{{ option.status }}</li>
+      >{{ option.text }}</li>
     </ul>
+    <slot name="reverse"/>
   </div>
 </template>
 
@@ -29,25 +30,12 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .filter {
     position: relative;
-    &__title {
-      cursor: pointer;
-    }
-    &__list {
-      position: absolute;
-      z-index: 10;
-      background-color: #fff;
-      display: inline-block;
-      border: 1px solid #ccc;
-    }
-    &__item {
-      padding: 8px;
-      cursor: pointer;
-      &:hover {
-        background-color: #ccc;
-      }
+    &:first-child {
+      margin-left: 0;
+      margin-right: auto;
     }
   }
 </style>

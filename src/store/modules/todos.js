@@ -35,6 +35,12 @@ export default {
     getters: {
         todos(state) {
             return state.todos
+        },
+        activeTodos(_,getters) {
+            return getters.todos.filter(item => item.status === 'active')
+        },
+        completedTodos(_,getters) {
+            return getters.todos.filter(item => item.status === 'completed')
         }
     }
 }
