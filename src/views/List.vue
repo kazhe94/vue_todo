@@ -81,12 +81,30 @@
         </template>
       </app-filter>
     </div>
-    <ul class="todo-list" v-if="todos.length">
-      <todo-item
-          v-for="todo in todos"
-          :key="todo.id"
-          :todo="todo"
-      ></todo-item>
+<!--    <ul class="todo-list" v-if="todos.length">-->
+<!--      <todo-item-->
+<!--          v-for="todo in todos"-->
+<!--          :key="todo.id"-->
+<!--          :todo="todo"-->
+<!--      ></todo-item>-->
+<!--    </ul>-->
+    <ul class="todo-table" v-if="todos.length">
+        <li>
+          <h5>#</h5>
+          <h5>Название</h5>
+          <h5>Дата</h5>
+          <h5>Приоритет</h5>
+          <h5>Статус</h5>
+          <h5>Действие</h5>
+          <h5>Удалить</h5>
+          <h5>Открыть</h5>
+        </li>
+        <todo-item
+            v-for="(todo, idx) in todos"
+            :todo="todo"
+            :idx="idx+1"
+            :key="todo.id"
+        ></todo-item>
     </ul>
     <h3 v-else>Задач пока нет, добавьте <router-link class="todo-list__link" to="/">новую</router-link></h3>
   </app-page>
@@ -131,7 +149,10 @@ export default {
               return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1
             }
             if(sort.value.type === 'date') {
-              return a.date > b.date ? -1 : 1
+              return a.id > b.id ? -1 : 1
+            }
+            if(sort.value.type === 'deadline') {
+              return a.date > b.date ? 1 : -1
             }
             return
           })
@@ -194,6 +215,22 @@ export default {
       height: 18px;
       margin: 0 auto;
       transform: rotate(90deg);
+    }
+  }
+  .todo-table {
+    display: table;
+    width: 100%;
+    li {
+      display: table-row;
+    }
+    h5 {
+      display: table-cell;
+      text-align: center;
+    }
+    div {
+      display: table-cell;
+      padding: 16px 0;
+      text-align: center;
     }
   }
 </style>

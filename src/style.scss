@@ -24,7 +24,7 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
-.active {
+.link-active {
   padding-bottom: 3px;
   border-bottom: 2px solid black;
 }
@@ -75,13 +75,23 @@ button {
   z-index: 100;
 }
 .btn-complete {
+  width: 84px;
   border-radius: 4px;
-  background-color: green;
   height: 100%;
   color: #ffffff;
   margin-right: 10px;
+  transition: 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
+  &.active {
+    background-color: green;
+  }
   &.completed {
     background-color: #ffc200;
+  }
+  &.expired {
+    background-color: brown;
   }
 }
 .btn-delete {
@@ -89,4 +99,30 @@ button {
   background-color: red;
   height: 100%;
   color: #ffffff;
+  transition: 0.3s;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  padding: .5rem 1rem;
+}
+
+.table td {
+  padding: .5rem 1rem;
+}
+
+.table tbody td {
+  text-align: center;
+}
+.table tr {
+  padding: 10px;
+}
+.table tbody tr:hover {
+  background: #eee;
 }

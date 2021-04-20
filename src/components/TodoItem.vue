@@ -1,20 +1,30 @@
 <template>
   <li class="todo-item">
-    <h5 class="todo-item__title" :class="{'completed': todo.status==='completed'}">{{ todo.title }}</h5>
-    <div class="todo-item__controls">
+    <div>{{idx}}</div>
+    <div>{{todo.title}}</div>
+    <div>{{new Date(todo.date).toLocaleDateString()}}</div>
+    <div>{{priority.text}}</div>
+    <div>{{statusMap[todo.status]}}</div>
+    <div>
       <button
-          class="btn-complete"
-          :class="{'completed': todo.status==='completed'}"
-          @click.stop="updateTodo(todo.id)"
-      >{{ todo.status==='active' ? 'Выполнить' : 'Отмена' }}</button>
+        class="btn-complete"
+        :class="todo.status"
+        @click.stop="updateTodo(todo.id)"
+      >
+        {{ textMap[todo.status] }}
+      </button>
+    </div>
+    <div>
       <button class="btn-delete" @click.stop="removeTodo(todo.id)">Удалить</button>
     </div>
-    <router-link class="todo-item__link" :to="`/task/${todo.id}`">Открыть</router-link>
+    <div>
+      <router-link class="todo-item__link" :to="`/task/${todo.id}`">Открыть</router-link>
+    </div>
   </li>
 </template>
 
 <script>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {useStore} from "vuex";
 
 export default {
@@ -23,10 +33,14 @@ export default {
     todo: {
       type: Object,
       required: true
+    },
+    idx: {
+      type: Number,
+      default: 1
     }
   },
   emits: ['removeTodo'],
-  setup() {
+  setup(props) {
     const store= useStore()
     const isOpen = ref(false)
     const removeTodo = (id) => {
@@ -35,10 +49,24 @@ export default {
     const updateTodo = (id) => {
       store.dispatch('todos/updateTodoStatus', id)
     }
+    const textMap = {
+      'expired': 'Выполнить',
+      'active': 'Выполнить',
+      'completed': 'В работу'
+    }
+    const statusMap = {
+      'expired': 'Просрочено',
+      'active': 'Активно',
+      'completed': 'Завершено'
+    }
+    const priority = computed(() => store.getters['filters/priorityOptions'].find(el => el.type === props.todo.priority))
     return {
       isOpen,
       removeTodo,
-      updateTodo
+      updateTodo,
+      textMap,
+      statusMap,
+      priority
     }
   }
 }
@@ -46,40 +74,7 @@ export default {
 
 <style lang="scss">
   .todo-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 3px 3px 3px #eee;
-    &__title {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      &.completed {
-        position: relative;
-        &::after {
-          content: '';
-          position: absolute;
-          z-index: 1;
-          background-color: #000000;
-          display: block;
-          height: 2px;
-          width: calc(100% + 10px);
-          transform: translateX(-5px);
-        }
-      }
-    }
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-    &__spoiler {
-      padding-top: 20px;
-    }
-    &__controls {
-      margin-left: auto;
-      margin-right: 20px;
-    }
+    border-bottom: 1px solid #cccccc;
     &__link {
       padding: 3px;
       border: 2px solid dodgerblue;

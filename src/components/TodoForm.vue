@@ -32,34 +32,46 @@
           v-model="date"
       >
     </div>
+    <div class="form-control">
+      <label for="priority">Приоритет</label>
+      <select class="form-input" id="priority" v-model="priority">
+        <option :value="option.type" v-for="option in priorityOptions">
+          {{option.text}}
+        </option>
+      </select>
+    </div>
     <button class="form-btn" type="submit" :disabled="!title.length">Добавить</button>
   </form>
 </template>
 
 <script>
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import {useStore} from "vuex";
 
 export default {
   name: "TodoForm",
-  setup(_, {emit}) {
+  setup() {
     const store = useStore()
     const title = ref('')
     const description = ref('')
     const date = ref('')
     const textarea = ref(null)
+    const priority = ref('default')
     const submitHandler = () => {
       const todo = {
         id: Date.now(),
         title: title.value,
         description: description.value,
         date: date.value,
-        status: 'active'
+        status: 'active',
+        priority: priority.value
       }
       store.dispatch('todos/createTodo', todo)
       title.value = ''
       description.value = ''
+      date.value = ''
     }
+    const priorityOptions = computed(() => store.getters['filters/priorityOptions'])
     const resize = () => {
       textarea.value.style.height = 'auto'
       textarea.value.style.height = textarea.value.scrollHeight + 'px'
@@ -70,7 +82,9 @@ export default {
       submitHandler,
       textarea,
       resize,
-      date
+      date,
+      priority,
+      priorityOptions
     }
   }
 }
@@ -92,14 +106,12 @@ export default {
     font-size: 12px;
   }
   .form-input {
+    width: 100%;
     border-radius: 8px;
     padding: 8px;
     outline: none;
     border: 1px solid #ccc;
     font-size: 14px;
-  }
-  input {
-    width: 100%;
   }
   textarea {
     resize: none;

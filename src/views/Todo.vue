@@ -33,14 +33,22 @@
               v-model="current.date"
           >
         </div>
+        <div class="form-control">
+          <label for="priority">Приоритет</label>
+          <select class="form-input" id="priority" v-model="current.priority">
+            <option :value="option.type" v-for="option in priorityOptions">
+              {{option.text}}
+            </option>
+          </select>
+        </div>
         <button class="form-btn" type="submit" :disabled="!hasChanges">Сохранить</button>
       </form>
       <div class="todo-buttons">
         <button
             class="btn-complete"
-            :class="{'completed': todo.status==='completed'}"
+            :class="todo.status"
             @click="updateTodo"
-        >{{ todo.status==='active' ? 'Выполнить' : 'Отмена' }}</button>
+        >{{ todo.status==='active' ? 'Выполнить' : 'В работу' }}</button>
         <button class="btn-delete" @click="removeTodo">Удалить</button>
       </div>
     </div>
@@ -80,8 +88,8 @@ export default {
     const store = useStore()
     const textarea = ref()
     const current = ref({})
-    const id = +route.params.id
     const todo = computed(() => store.getters['todos/todo'](+route.params.id))
+    const priorityOptions = computed(() => store.getters['filters/priorityOptions'])
     current.value = {...todo.value}
     onMounted(() => {
       if(textarea.value) {
@@ -96,19 +104,21 @@ export default {
       if(todo.value) {
         return current.value.title !== todo.value.title ||
             current.value.date !== todo.value.date ||
-            current.value.description !== todo.value.description
+            current.value.description !== todo.value.description ||
+            current.value.priority !== todo.value.priority
       }
     })
+    console.log(current.value)
 
     const submitHandler = () => {
       store.dispatch('todos/updateTodo', current.value)
     }
     const removeTodo = () => {
-      store.dispatch('todos/deleteTodo', id)
-      router.push({name: 'List'})
+      store.dispatch('todos/deleteTodo', +route.params.id)
+      router.replace({name: 'List'})
     }
     const updateTodo = () => {
-      store.dispatch('todos/updateTodoStatus', id)
+      store.dispatch('todos/updateTodoStatus', +route.params.id)
     }
 
     return {
@@ -120,6 +130,7 @@ export default {
       submitHandler,
       removeTodo,
       updateTodo,
+      priorityOptions,
       ...useLeaveGuard(hasChanges, submitHandler)
     }
   }
