@@ -18,18 +18,26 @@ export default {
             const current = state.todos.find(el => el.id === id)
             current.status === 'completed' ? current.status = 'active' : current.status = 'completed'
             localStorage.setItem('todos', JSON.stringify(state.todos))
-
+        },
+        updateTodo(state, payload) {
+            const idx = state.todos.findIndex(item => item.id === payload.id)
+            state.todos[idx] = payload
+            localStorage.setItem('todos', JSON.stringify(state.todos))
         }
     },
     actions: {
-      createTodo({commit}, payload) {
-          commit('addTodo', payload)
-      },
-      deleteTodo({commit}, id) {
-          commit('removeTodo', id)
-      },
+          createTodo({commit}, payload) {
+              commit('addTodo', payload)
+              console.log(payload)
+          },
+          deleteTodo({commit}, id) {
+              commit('removeTodo', id)
+          },
         updateTodoStatus({commit}, id) {
           commit('updateStatus', id)
+        },
+        updateTodo({commit}, payload) {
+            commit('updateTodo', payload)
         }
     },
     getters: {

@@ -7,7 +7,8 @@
           class="form-input"
           type="text" id="title"
           placeholder="Введите название задачи"
-          v-model="title"
+          v-model.trim="title"
+          required
       >
     </div>
     <div class="form-control">
@@ -16,38 +17,60 @@
           class="form-input"
           id="description"
           placeholder="Введите описание задачи"
-          v-model="description"
+          v-model.trim="description"
+          ref="textarea"
+          @focus="resize"
+          @keyup="resize"
       />
     </div>
-    <button class="submit-btn" type="submit">Добавить</button>
+    <div class="form-control">
+      <label for="date">Дата</label>
+      <input
+          id="date"
+          type="date"
+          class="form-input"
+          v-model="date"
+      >
+    </div>
+    <button class="submit-btn" type="submit" :disabled="!title.length">Добавить</button>
   </form>
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useStore} from "vuex";
 
 export default {
   name: "TodoForm",
-  setup() {
+  setup(_, {emit}) {
     const store = useStore()
     const title = ref('')
     const description = ref('')
+    const date = ref('')
+    const textarea = ref(null)
     const submitHandler = () => {
       const todo = {
         id: Date.now(),
         title: title.value,
         description: description.value,
+        date: date.value,
         status: 'active'
       }
       store.dispatch('todos/createTodo', todo)
       title.value = ''
       description.value = ''
     }
+    const resize = () => {
+      textarea.value.style.height = 'auto'
+      textarea.value.style.height = textarea.value.scrollHeight + 'px'
+    }
     return {
       title,
       description,
-      submitHandler
+      submitHandler,
+      textarea,
+      resize,
+      date
     }
   }
 }
@@ -82,6 +105,7 @@ export default {
     resize: none;
     width: 100%;
     font-family: 'Roboto', 'Arial', sans-serif;
+    overflow: hidden;
   }
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -97,6 +121,10 @@ export default {
   background-color: dodgerblue;
   color: #fff;
   transition: 0.3s;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
   &:hover {
     opacity: 0.7;
   }

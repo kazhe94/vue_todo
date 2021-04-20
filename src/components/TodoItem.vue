@@ -53,8 +53,21 @@ export default {
     border-radius: 8px;
     box-shadow: 3px 3px 3px #eee;
     &__title {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
       &.completed {
-        text-decoration: line-through;
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          z-index: 1;
+          background-color: #000000;
+          display: block;
+          height: 2px;
+          width: calc(100% + 10px);
+          transform: translateX(-5px);
+        }
       }
     }
     &:not(:last-child) {
