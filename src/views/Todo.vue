@@ -1,8 +1,7 @@
 <template>
-  <app-page nav>
+  <app-page nav v-if="todo">
     <div class="form-wrap">
       <form class="form" @submit.prevent="submitHandler">
-        <legend>Заполните поля для добавления задачи</legend>
         <div class="form-control">
           <label for="title">Название</label>
           <input
@@ -34,8 +33,16 @@
               v-model="current.date"
           >
         </div>
-        <button class="submit-btn" type="submit" :disabled="!hasChanges">Сохранить</button>
+        <button class="form-btn" type="submit" :disabled="!hasChanges">Сохранить</button>
       </form>
+      <div class="todo-buttons">
+        <button
+            class="btn-complete"
+            :class="{'completed': todo.status==='completed'}"
+            @click="updateTodo"
+        >{{ todo.status==='active' ? 'Выполнить' : 'Отмена' }}</button>
+        <button class="btn-delete" @click="removeTodo">Удалить</button>
+      </div>
     </div>
   </app-page>
   <teleport to="body">
@@ -54,7 +61,7 @@
 <script>
 import AppPage from "@/components/AppPage";
 import {useRoute, useRouter} from "vue-router";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, onUpdated, ref, watch} from "vue";
 import {useStore} from "vuex";
 import TodoForm from "@/components/TodoForm";
 import {useLeaveGuard} from "@/use/leaveGuard";
@@ -73,31 +80,46 @@ export default {
     const store = useStore()
     const textarea = ref()
     const current = ref({})
+    const id = +route.params.id
     const todo = computed(() => store.getters['todos/todo'](+route.params.id))
     current.value = {...todo.value}
     onMounted(() => {
-      resize()
+      if(textarea.value) {
+        resize()
+      }
     })
     const resize = () => {
       textarea.value.style.height = 'auto'
       textarea.value.style.height = textarea.value.scrollHeight + 'px'
     }
     const hasChanges = computed(() => {
-      return current.value.title !== todo.value.title ||
-          current.value.date !== todo.value.date ||
-          current.value.description !== todo.value.description
+      if(todo.value) {
+        return current.value.title !== todo.value.title ||
+            current.value.date !== todo.value.date ||
+            current.value.description !== todo.value.description
+      }
     })
 
     const submitHandler = () => {
       store.dispatch('todos/updateTodo', current.value)
     }
+    const removeTodo = () => {
+      store.dispatch('todos/deleteTodo', id)
+      router.push({name: 'List'})
+    }
+    const updateTodo = () => {
+      store.dispatch('todos/updateTodoStatus', id)
+    }
 
     return {
       current,
+      todo,
       textarea,
       resize,
       hasChanges,
       submitHandler,
+      removeTodo,
+      updateTodo,
       ...useLeaveGuard(hasChanges, submitHandler)
     }
   }
@@ -105,5 +127,15 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .todo-buttons {
+    display: flex;
+    min-width: 85px;
+    margin-left: 30px;
+    flex-direction: column;
+    align-self: flex-start;
+    .btn-complete {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
 </style>

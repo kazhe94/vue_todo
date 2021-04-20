@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   .todo-item {
     display: flex;
     justify-content: space-between;
@@ -92,22 +92,6 @@ export default {
         color: #ffffff;
       }
     }
-  }
-  .btn-complete {
-    border-radius: 4px;
-    background-color: green;
-    height: 100%;
-    color: #ffffff;
-    margin-right: 10px;
-    &.completed {
-      background-color: #ffc200;
-    }
-  }
-  .btn-delete {
-    border-radius: 4px;
-    background-color: red;
-    height: 100%;
-    color: #ffffff;
   }
   
 </style>

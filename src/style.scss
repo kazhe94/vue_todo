@@ -74,3 +74,19 @@ button {
   background: rgba(0, 0, 0, .35);
   z-index: 100;
 }
+.btn-complete {
+  border-radius: 4px;
+  background-color: green;
+  height: 100%;
+  color: #ffffff;
+  margin-right: 10px;
+  &.completed {
+    background-color: #ffc200;
+  }
+}
+.btn-delete {
+  border-radius: 4px;
+  background-color: red;
+  height: 100%;
+  color: #ffffff;
+}

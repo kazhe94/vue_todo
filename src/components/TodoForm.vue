@@ -32,7 +32,7 @@
           v-model="date"
       >
     </div>
-    <button class="submit-btn" type="submit" :disabled="!title.length">Добавить</button>
+    <button class="form-btn" type="submit" :disabled="!title.length">Добавить</button>
   </form>
 </template>
 
@@ -111,7 +111,7 @@ export default {
     margin-bottom: 10px;
   }
 }
-.submit-btn {
+.form-btn {
   display: block;
   margin-right: 0;
   margin-left: auto;
