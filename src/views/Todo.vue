@@ -38,23 +38,38 @@
       </form>
     </div>
   </app-page>
+  <teleport to="body">
+    <app-modal
+        v-if="leave"
+        :title="`Были произведены изменения. Вы уверены что хотите покинуть страницу?`"
+        @close="leave = false"
+        @confirm="navigate"
+        @reject="leave = false"
+        @save="saveAndLeave"
+    >
+    </app-modal>
+  </teleport>
 </template>
 
 <script>
 import AppPage from "@/components/AppPage";
-import {useRoute} from "vue-router";
-import {computed, onMounted, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {computed, onMounted, ref} from "vue";
 import {useStore} from "vuex";
 import TodoForm from "@/components/TodoForm";
+import {useLeaveGuard} from "@/use/leaveGuard";
+import AppModal from "@/components/AppModal";
 
 export default {
   name: "Task",
   components: {
     AppPage,
-    TodoForm
+    TodoForm,
+    AppModal
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const store = useStore()
     const textarea = ref()
     const current = ref({})
@@ -82,7 +97,8 @@ export default {
       textarea,
       resize,
       hasChanges,
-      submitHandler
+      submitHandler,
+      ...useLeaveGuard(hasChanges, submitHandler)
     }
   }
 }
