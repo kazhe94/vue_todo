@@ -7,14 +7,13 @@ export default {
   name: "AppBadge",
   props: {
     status: {
-      type: String
+      type: String,
+      default: 'Активно'
     },
     color: {
-      type: String
+      type: String,
+      default: 'active'
     }
-  },
-  setup(props) {
-    console.log(props.color)
   }
 }
 </script>

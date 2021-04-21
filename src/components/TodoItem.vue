@@ -43,7 +43,8 @@ export default {
     },
     idx: {
       type: Number,
-      default: 1
+      default: 1,
+      required: true
     }
   },
   emits: ['removeTodo'],

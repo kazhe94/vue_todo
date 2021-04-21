@@ -16,7 +16,8 @@ export default {
   emits: ['close', 'reject', 'confirm', 'save'],
   props: {
     title: {
-      type: String
+      type: String,
+      required: true
     }
   }
 }

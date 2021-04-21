@@ -22,11 +22,21 @@
 <script>
 export default {
   name: "AppFilter",
-  props: ['filter', 'options', 'open'],
+  props: {
+    filter: {
+      type: Object,
+      required: true
+    },
+    options: {
+      type: Array,
+      required: true
+    },
+    open: {
+      type: Boolean,
+      required: true
+    }
+  },
   emits: ['setFilter', 'openFilter', 'close'],
-  setup() {
-
-  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <form class="form" @submit.prevent="submitHandler">
-    <legend>Заполните поля для добавления задачи</legend>
+    <h3>Заполните поля для добавления задачи</h3>
     <div class="form-control">
       <label for="title">Название</label>
       <input
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {computed, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import {useStore} from "vuex";
 
 export default {
