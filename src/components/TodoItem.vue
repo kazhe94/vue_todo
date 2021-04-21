@@ -87,18 +87,20 @@ export default {
     &__title {
       padding: 20px!important;
       max-width: 400px;
-      span {
-        position: relative;
-        &::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 0;
-          transform: translate(-5px, -50%);
-          display: block;
-          width: calc(100% + 10px);
-          height: 2px;
-          background-color: #000000;
+      &.completed {
+        span {
+          position: relative;
+          &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-5px, -50%);
+            display: block;
+            width: calc(100% + 10px);
+            height: 2px;
+            background-color: #000000;
+          }
         }
       }
     }
