@@ -1,21 +1,21 @@
 <template>
   <li class="todo-item">
     <div>{{idx}}</div>
-    <div>{{todo.title}}</div>
-    <div>{{new Date(todo.date).toLocaleDateString()}}</div>
+    <div class="todo-item__title" :class="{'completed': todo.status === 'completed'}"><span>{{todo.title}}</span></div>
+    <div>{{todo.date ? new Date(todo.date).toLocaleDateString() : ''}}</div>
     <div>{{priority.text}}</div>
-    <div>{{statusMap[todo.status]}}</div>
+    <div class="todo-item__status">{{optionMaps.statusMap[todo.status]}}</div>
     <div>
       <button
         class="btn-complete"
         :class="todo.status"
         @click.stop="updateTodo(todo.id)"
       >
-        {{ textMap[todo.status] }}
+        &#10004;
       </button>
     </div>
     <div>
-      <button class="btn-delete" @click.stop="removeTodo(todo.id)">Удалить</button>
+      <button class="btn-delete" @click.stop="removeTodo(todo.id)">x</button>
     </div>
     <div>
       <router-link class="todo-item__link" :to="`/task/${todo.id}`">Открыть</router-link>
@@ -26,6 +26,7 @@
 <script>
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
+import optionMaps from "@/optionMaps";
 
 export default {
   name: "TodoItem",
@@ -49,24 +50,13 @@ export default {
     const updateTodo = (id) => {
       store.dispatch('todos/updateTodoStatus', id)
     }
-    const textMap = {
-      'expired': 'Выполнить',
-      'active': 'Выполнить',
-      'completed': 'В работу'
-    }
-    const statusMap = {
-      'expired': 'Просрочено',
-      'active': 'Активно',
-      'completed': 'Завершено'
-    }
     const priority = computed(() => store.getters['filters/priorityOptions'].find(el => el.type === props.todo.priority))
     return {
       isOpen,
       removeTodo,
       updateTodo,
-      textMap,
-      statusMap,
-      priority
+      priority,
+      optionMaps
     }
   }
 }
@@ -74,7 +64,9 @@ export default {
 
 <style lang="scss">
   .todo-item {
-    border-bottom: 1px solid #cccccc;
+    &:not(:last-child) {
+      border-bottom: 1px solid #cccccc;
+    }
     &__link {
       padding: 3px;
       border: 2px solid dodgerblue;
@@ -86,6 +78,32 @@ export default {
         background-color: dodgerblue;
         color: #ffffff;
       }
+    }
+    .btn-delete {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+    &__title {
+      padding: 20px!important;
+      max-width: 400px;
+      span {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translate(-5px, -50%);
+          display: block;
+          width: calc(100% + 10px);
+          height: 2px;
+          background-color: #000000;
+        }
+      }
+    }
+    &__status {
+      width: 132px;
     }
   }
   

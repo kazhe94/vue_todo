@@ -104,25 +104,3 @@ button {
     opacity: 0.5;
   }
 }
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th {
-  padding: .5rem 1rem;
-}
-
-.table td {
-  padding: .5rem 1rem;
-}
-
-.table tbody td {
-  text-align: center;
-}
-.table tr {
-  padding: 10px;
-}
-.table tbody tr:hover {
-  background: #eee;
-}

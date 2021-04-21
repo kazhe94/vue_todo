@@ -2,7 +2,8 @@
   <app-page title="Список задач">
     <div class="filters">
       <app-filter
-          v-model="sort"
+          :filter="sort"
+          @setFilter="setSort"
           :options="sortOptions"
           :open="sortOpened"
           @openFilter="sortOpened = !sortOpened"
@@ -70,7 +71,8 @@
         </template>
       </app-filter>
       <app-filter
-          v-model="filter"
+          :filter="filter"
+          @setFilter="setFilter"
           :options="filterOptions"
           :open="filterOpened"
           @openFilter="filterOpened = !filterOpened"
@@ -81,18 +83,11 @@
         </template>
       </app-filter>
     </div>
-<!--    <ul class="todo-list" v-if="todos.length">-->
-<!--      <todo-item-->
-<!--          v-for="todo in todos"-->
-<!--          :key="todo.id"-->
-<!--          :todo="todo"-->
-<!--      ></todo-item>-->
-<!--    </ul>-->
     <ul class="todo-table" v-if="todos.length">
         <li>
           <h5>#</h5>
           <h5>Название</h5>
-          <h5>Дата</h5>
+          <h5>Дедлайн</h5>
           <h5>Приоритет</h5>
           <h5>Статус</h5>
           <h5>Действие</h5>
@@ -128,14 +123,8 @@ export default {
     const store = useStore()
     const filterOpened = ref(false)
     const sortOpened = ref(false)
-    const filter = ref({
-      type: 'all',
-      text: 'Все задачи'
-    })
-    const sort = ref({
-      type: 'date',
-      text: 'По дате создания'
-    })
+    const filter = computed(() => store.getters['filters/filter'])
+    const sort = computed(() => store.getters['filters/sort'])
     const reverse = ref(false)
     const filterOptions = computed(() => store.getters['filters/statusOptions'])
     const sortOptions = computed(() => store.getters['filters/sortOptions'])
@@ -159,15 +148,26 @@ export default {
       return reverse.value ? items.reverse() : items
     })
 
+    const setFilter = (type) => {
+      console.log(type)
+      store.commit('filters/setFilter', type)
+    }
+    const setSort = (type) => {
+      console.log(type)
+      store.commit('filters/setSort', type)
+    }
+
     return {
       todos,
       filter,
+      sort,
       filterOptions,
       filterOpened,
       sortOptions,
       sortOpened,
-      sort,
       reverse,
+      setFilter,
+      setSort,
     }
   }
 }
@@ -220,16 +220,21 @@ export default {
   .todo-table {
     display: table;
     width: 100%;
+    border-collapse: collapse;
     li {
       display: table-row;
     }
     h5 {
       display: table-cell;
+      padding-bottom: 16px;
       text-align: center;
     }
     div {
       display: table-cell;
-      padding: 16px 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 20px 0;
       text-align: center;
     }
   }

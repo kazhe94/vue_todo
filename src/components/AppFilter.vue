@@ -3,7 +3,7 @@
     <p
         class="option__text"
         @click="$emit('openFilter')"
-    >{{ modelValue.text }} <slot name="count"/> <span>&#9660;</span></p>
+    >{{ filter.text }} <slot name="count"/> <span>&#9660;</span></p>
     <ul
         class="option__list"
         v-if="open"
@@ -12,7 +12,7 @@
           class="option__item"
           v-for="option in options"
           :key="option.type"
-          @click="$emit('update:modelValue', option), $emit('close')"
+          @click="$emit('setFilter', option.type), $emit('close')"
       >{{ option.text }}</li>
     </ul>
     <slot name="reverse"/>
@@ -22,8 +22,8 @@
 <script>
 export default {
   name: "AppFilter",
-  props: ['modelValue', 'options', 'open'],
-  emits: ['update:modelValue', 'openFilter', 'close'],
+  props: ['filter', 'options', 'open'],
+  emits: ['setFilter', 'openFilter', 'close'],
   setup() {
 
   }

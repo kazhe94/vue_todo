@@ -48,7 +48,7 @@
             class="btn-complete"
             :class="todo.status"
             @click="updateTodo"
-        >{{ todo.status==='active' ? 'Выполнить' : 'В работу' }}</button>
+        >{{ optionMaps.textMap[todo.status] }}</button>
         <button class="btn-delete" @click="removeTodo">Удалить</button>
       </div>
     </div>
@@ -74,6 +74,7 @@ import {useStore} from "vuex";
 import TodoForm from "@/components/TodoForm";
 import {useLeaveGuard} from "@/use/leaveGuard";
 import AppModal from "@/components/AppModal";
+import optionMaps from "@/optionMaps";
 
 export default {
   name: "Task",
@@ -108,7 +109,6 @@ export default {
             current.value.priority !== todo.value.priority
       }
     })
-    console.log(current.value)
 
     const submitHandler = () => {
       store.dispatch('todos/updateTodo', current.value)
@@ -131,6 +131,7 @@ export default {
       removeTodo,
       updateTodo,
       priorityOptions,
+      optionMaps,
       ...useLeaveGuard(hasChanges, submitHandler)
     }
   }
