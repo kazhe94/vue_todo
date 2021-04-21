@@ -1,19 +1,12 @@
 # todo-list
 
-## Project setup
-```
-npm install
-```
+https://vue-todo-34f01.web.app/
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+features:
+1. add todo
+2. complete todo
+3. delete todo
+4. if todo outdated, it's status set to expired
+5. todo sort and filter
+6. edit todo page
+7. popup before route after changes in todo
