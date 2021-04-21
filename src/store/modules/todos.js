@@ -21,7 +21,6 @@ export default {
         updateStatus(state, id) {
             const idx = state.todos.findIndex(el => el.id === id)
             state.todos[idx].status = state.todos[idx].status === 'completed' ? 'active' : 'completed'
-            console.log(state.todos[idx])
             localStorage.setItem('todos', JSON.stringify(state.todos))
         },
         updateTodo(state, payload) {

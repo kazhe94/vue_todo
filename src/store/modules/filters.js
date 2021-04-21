@@ -12,11 +12,12 @@ export default {
                 {text: 'По алфавиту', type: 'name'},
                 {text: 'По дате создания', type: 'date'},
                 {text: 'По дате дедлайна', type: 'deadline'},
+                {text: 'По приоритету', type: 'priority'}
             ],
             priorityOptions: [
-                {text: 'Высокий', type: 'high'},
-                {text: 'Обычный', type: 'default'},
-                {text: 'Низкий', type: 'low'}
+                {text: 'Высокий', type: '3'},
+                {text: 'Обычный', type: '2'},
+                {text: 'Низкий', type: '1'}
             ],
             sort: {
                 type: 'date',

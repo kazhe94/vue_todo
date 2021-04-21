@@ -143,6 +143,9 @@ export default {
             if(sort.value.type === 'deadline') {
               return a.date > b.date ? 1 : -1
             }
+            if(sort.value.type === 'priority') {
+              return a.priority > b.priority ? -1 : 1
+            }
             return
           })
       return reverse.value ? items.reverse() : items

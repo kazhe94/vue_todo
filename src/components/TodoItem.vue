@@ -3,8 +3,13 @@
     <div>{{idx}}</div>
     <div class="todo-item__title" :class="{'completed': todo.status === 'completed'}"><span>{{todo.title}}</span></div>
     <div>{{todo.date ? new Date(todo.date).toLocaleDateString() : ''}}</div>
-    <div>{{priority.text}}</div>
-    <div class="todo-item__status">{{optionMaps.statusMap[todo.status]}}</div>
+    <div class="todo-item__priority">{{priority.text}}</div>
+    <div class="todo-item__status">
+      <app-badge
+          :status="optionMaps.statusMap[todo.status]"
+          :color="todo.status"
+      ></app-badge>
+    </div>
     <div>
       <button
         class="btn-complete"
@@ -27,6 +32,7 @@
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
 import optionMaps from "@/optionMaps";
+import AppBadge from "@/components/AppBadge";
 
 export default {
   name: "TodoItem",
@@ -41,6 +47,9 @@ export default {
     }
   },
   emits: ['removeTodo'],
+  components: {
+    AppBadge
+  },
   setup(props) {
     const store= useStore()
     const isOpen = ref(false)
@@ -106,6 +115,10 @@ export default {
     }
     &__status {
       width: 132px;
+      font-size: 12px;
+    }
+    &__priority {
+      font-weight: 500;
     }
   }
   
